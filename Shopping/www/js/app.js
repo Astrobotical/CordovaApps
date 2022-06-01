@@ -3,9 +3,14 @@ const Foodlist =[{ID:"Pancake", Price: 250, Description: "Pancake with butter an
 {ID: "Burger" , Price: 300, Description: "Burger with cheese and bacon", img : 'img/food/burger.jfif'},
 {ID: "Pasta" , Price: 350, Description: "Pasta with tomato sauce and meat",    img : 'img/food/pasta.jfif'},
 {ID: "Sandwich" , Price: 400, Description: "Sandwich with ham and cheese",   img : 'img/food/sandwich.jfif'}];
+const pages = [{Name:"index", Location:"index.html"},{Name:"cart", Location:"cart.html"}];
 var container = document.getElementById("app");
+var shoppingcart = document.getElementById("main");
 var cartbutton = document.getElementById("cart");
 var storage = window.localStorage;
+storage.setItem("pages", JSON.stringify(pages));
+
+var buttonstate = false;
 var cartitems =[];
 let app ={
     initialize: function(){
@@ -32,20 +37,18 @@ let app ={
         container.appendChild(div);
     }
 },  addtocart : function(id){
-    {
    // alert(id + " added to cart");
-
     Foodlist.forEach((key, value) =>{
         //console.log(key.ID);
         if(id ==  key.ID){
            if(cartitems.find(x => x.ID === id)){
-               return  alertify.warning(id +' is already in cart'); 
+               return  alertify.error(id +' is already in cart'); 
            }
            else{
                var newly = 
                   {
                           ID: key.ID,
-                            Price:    key.Price,
+                            Price: key.Price,
                             Description: key.Description,
                             img : key.img
                    }
@@ -53,11 +56,11 @@ let app ={
                alertify.notify(`${id} added to cart`, 'success', 3, function(){  console.log(`${id} was added`); });
                var cart = document.getElementById("cart");
                 cartitems.push(newly);
+                storage.setItem("cart", JSON.stringify(cartitems));
                 cart.innerHTML = "Cart Items " + `(${cartitems.length})`;
            }
         }
     });
-}
 },
     showcart: function(){
         var cart = document.getElementById("cart");
@@ -82,9 +85,12 @@ let app ={
             <td>${key.Description}</td>
             <td><button onclick="app.removefromcart(\``+key.ID+ `\`)" class="btn btn-danger">Remove</button></td></tr>`;
         });
-        cartlist += `</tbody></table><button onclick="app.hidecart()" class="btn btn-primary">Close</button>`;
+        cartlist += `</tbody></table> <button onclick="app.Routes(\``+"cart"+`\`)" class="btn btn-info">To Cart</button><button onclick="app.hidecart()" class="btn btn-primary close">Close</button>`;
         cartbutton.style.display = "none";
-            items.innerHTML = cartlist;
+        if(cartitems.length == 0){
+            cartlist = "Cart is empty";
+        }else{
+            items.innerHTML = cartlist;}
     },
     hidecart: function(){
         var items = document.getElementById("chartshow");
@@ -94,11 +100,35 @@ let app ={
     removefromcart: function(id){
         cartitems.forEach((key, value) =>{
             if(id ==  key.ID){
-                alertify.notify(`${id} removed from cart`, 'error', 5, function(){  console.log('Item removed'); });
+                alertify.notify(`${id}  was removed from cart`, 'error', 5, function(){  console.log('Item removed'); });
                 cartitems.splice(value, 1);
             }
         });
         app.showcart();
+    },
+    Routes : function(location){
+        pages.forEach((key, value) =>{
+            if(location == key.Name){
+               return window.location.href = key.Location;
+            }
+        });
+    },
+    loadcart: function(){
+        const cart = JSON.parse(storage.getItem("cart"));
+        for(var i = 0; i < cart.length; i++)
+        {
+            var food = cart[i];
+            var div = document.createElement("div");
+            div.classList.add("card");
+            div.innerHTML = `<div class="card">
+            <img src="${food.img}" class="card-img-top style="height: 40%; width:50%">
+            <div class="card-body">
+            <h4>${food.ID}</h4>
+            <p class="card-text">$ ${food.Price}</p>
+            <p>${food.Description}</p>
+            <button onclick="app.removefromcart(\``+food.ID+ `\`)" class="btn btn-danger">Remove from cart</button></div></div>`;
+            shoppingcart.appendChild(div);
+        }
     }
 };
 app.initialize();
