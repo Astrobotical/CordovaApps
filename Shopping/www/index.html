@@ -22,16 +22,18 @@
         <title>Product page</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-light">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="mynavbar">
 
-                    <form class="d-flex">  
-                        <button class="glyphicon glyphicon-shopping-cart" id="cart" type="button"></button>
-                      </form>
+                    <div class="d-flex">  
+                        <button id="cart" class ="btn btn-primary" type="button" onclick="app.showcart()"></button>
+                            
+                            <p id="chartshow">.</p>
+                        </div>
                     </div>
                 </div>
             </nav>
