@@ -22,20 +22,19 @@
         <title>Cart page</title>
     </head>
     <body >
-        <nav class="navbar navbar-expand-sm navbar-dark bg-light">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <a class="navbar-brand" href="#">Astro's Cart</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="mynavbar">
-
-                    <div class="d-flex">  
-                        <button id="cart" class ="btn btn-primary" type="button" onclick="app.showcart()"></button>
-                            
-                            <p id="chartshow">.</p>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a href="index.html" class ="nav-link">Products</a></li>
+                        <li class="nav-item"><a href="cart.html" id="cart" class ="nav-link" type="button">Cart <p id="chartshow"
+                            ></p></a></li></ul>
                         </div>
                     </div>
-                </div>
             </nav>
         <div id="main"  class="container">
         </div>

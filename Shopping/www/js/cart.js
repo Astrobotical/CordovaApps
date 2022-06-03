@@ -5,6 +5,7 @@ const pages = JSON.parse(storage.getItem("pages"));
 let cart ={
     initialize: function(){
         document.addEventListener('deviceready', this.applicationready, false);
+        document.addEventListener('deviceready', this.getcartcount , false);
     },
     applicationready: function(){
     cart.loadcart();
@@ -43,9 +44,20 @@ Routes : function(location){
             if(id ==  key.ID){
                 alertify.notify(`${id}  was removed from cart`, 'error', 5, function(){  console.log('Item removed'); });
                 cartitems.splice(value, 1);
+                shoppingcart.innerHTML = "";
+                cart.loadcart();
+                cart.getcartcount();
             }
         });
-        app.showcart();
+        //app.showcart();
+    }, 
+    getcartcount: function(){
+        var cart = document.getElementById("cart");
+        if(cartitems.length  != 0){
+        cart.innerHTML =` Cart (items ${cartitems.length})`;
+    } else{
+        cart.innerHTML =` Cart (No items in the cart)`;
     }
+}
 };
 cart.initialize();

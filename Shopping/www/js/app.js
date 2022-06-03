@@ -15,6 +15,7 @@ var cartitems =[];
 let app ={
     initialize: function(){
         document.addEventListener('deviceready', this.applicationready, false);
+        document.addEventListener('deviceready', this.getcartcount , false);
     },
     applicationready: function(){
     app.createitems();
@@ -57,7 +58,11 @@ let app ={
                var cart = document.getElementById("cart");
                 cartitems.push(newly);
                 storage.setItem("cart", JSON.stringify(cartitems));
-                cart.innerHTML = "Cart Items " + `(${cartitems.length})`;
+                if(cartitems.length  != 0){
+                    cart.innerHTML =` Cart (items ${cartitems.length})`;
+                } else{
+                    cart.innerHTML =` Cart (No items in the cart)`;
+                }
            }
         }
     });
@@ -129,6 +134,15 @@ let app ={
             <button onclick="app.removefromcart(\``+food.ID+ `\`)" class="btn btn-danger">Remove from cart</button></div></div>`;
             shoppingcart.appendChild(div);
         }
+    },
+    getcartcount: function(){
+        var cart = document.getElementById("cart");
+        if(cartitems.length  != 0){
+        cart.innerHTML =` Cart (items ${cartitems.length})`;
+    } else{
+        cart.innerHTML =` Cart (No items in the cart)`;
     }
+}
 };
 app.initialize();
+//document.getElementById("cart").addEventListener("click",app.showcart)
