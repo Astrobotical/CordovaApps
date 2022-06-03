@@ -28,13 +28,20 @@ let app ={
         var food = Foodlist[i];
         var div = document.createElement("div");
         div.classList.add("card");
-        div.innerHTML = `<div class="card">
+        div.classList.add("First");
+        var item = `<div class="card">
         <img src="${food.img}" class="card-img-top">
         <div class="card-body">
         <h4>${food.ID}</h4>
         <p class="card-text">$ ${food.Price}</p>
-        <p>${food.Description}</p>
-        <button onclick="app.addtocart(\``+food.ID+ `\`)" class="btn btn-primary">Add to cart</button></div></div>`;
+        <p>${food.Description}</p>`;
+        if(cartitems.find(x => x.ID === food.ID))
+        {
+            item += `<button onclick="app.addtocart(\``+food.ID+ `\`)" class="btn btn-warning">Already in the cart</button></div></div>`;
+        }else{
+       item += `<button onclick="app.addtocart(\``+food.ID+ `\`)" class="btn btn-primary">Add to cart</button></div></div>`;
+        }
+        div.innerHTML = item;
         container.appendChild(div);
     }
 },  addtocart : function(id){
@@ -43,6 +50,7 @@ let app ={
         //console.log(key.ID);
         if(id ==  key.ID){
            if(cartitems.find(x => x.ID === id)){
+               
                return  alertify.error(id +' is already in cart'); 
            }
            else{
@@ -58,6 +66,8 @@ let app ={
                var cart = document.getElementById("cart");
                 cartitems.push(newly);
                 storage.setItem("cart", JSON.stringify(cartitems));
+                app.deleteElements();
+               app.createitems();
                 if(cartitems.length  != 0){
                     cart.innerHTML =` Cart (items ${cartitems.length})`;
                 } else{
@@ -142,7 +152,12 @@ let app ={
     } else{
         cart.innerHTML =` Cart (No items in the cart)`;
     }
-}
+},
+deleteElements : function(){
+    const div2 = document.querySelectorAll('.First');
+    if (typeof (div2) != 'undefined' && div2 != null) {
+        div2.forEach(obj => {obj.remove();});}
+    }
 };
 app.initialize();
 //document.getElementById("cart").addEventListener("click",app.showcart)
